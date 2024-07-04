@@ -19,7 +19,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from CarritoApp.views import agregar_producto, eliminar_producto, index, limpiar_carrito, restar_producto, tienda
+from CarritoApp.views import agregar_producto, eliminar_producto, index, limpiar_carrito, restar_producto, tienda, contacto, nosotros, juguetesPerros
 
 
 urlpatterns = [
@@ -30,7 +30,9 @@ urlpatterns = [
     path('eliminar/<int:producto_id>/', eliminar_producto, name="Del"),
     path('restar/<int:producto_id>/', restar_producto, name="Sub"),
     path('limpiar/', limpiar_carrito, name="CLS"),
-    
+    path('contacto/', contacto, name="contacto"),
+    path('nosotros/', nosotros, name="nosotros"),
+    path('juguetesPerros/', juguetesPerros, name="juguetesPerros"),
 ]
 
 if settings.DEBUG:

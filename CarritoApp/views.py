@@ -36,3 +36,12 @@ def limpiar_carrito(request):
 
 def index(request):
     return render(request, 'index.html')
+
+def contacto(request):
+    return render(request, 'contacto.html')
+
+def juguetesPerros(request):
+    return render(request, 'juguetesPerros.html')
+
+def nosotros(request):
+    return render(request, 'nosotros.html')
