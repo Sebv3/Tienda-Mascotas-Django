@@ -92,19 +92,19 @@
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
         <ul class="navbar-nav w-100">
           <li class="nav-item enlaces-nav">
-            <a class="nav-link active btn-nav" href="index.html">Inicio</a>
+            <a class="nav-link active btn-nav" href="{% url 'Index' %}">Inicio</a>
           </li>
           <li class="nav-item enlaces-nav">
-            <a class="nav-link active btn-nav" href="productos.html">Productos</a>
+            <a class="nav-link active btn-nav" href="{% url 'Tienda' %}">Productos</a>
           </li>
           <li class="nav-item enlaces-nav">
-            <a class="nav-link active btn-nav" href="nosotros.html">Nosotros</a>
+            <a class="nav-link active btn-nav" href="{% url 'nosotros' %}">Nosotros</a>
           </li>
           <li class="nav-item enlaces-nav">
-            <a class="nav-link active btn-nav" href="ayuda.html">Mi pedido</a>
+            <a class="nav-link active btn-nav" href="{% url 'juguetesPerros' %}">Mi pedido</a>
           </li>
           <li class="nav-item enlaces-nav">
-            <a class="nav-link active btn-nav" href="contacto.html">Contacto</a>
+            <a class="nav-link active btn-nav" href="{% url 'contacto' %}">Contacto</a>
           </li>
         </ul>
       </div>
