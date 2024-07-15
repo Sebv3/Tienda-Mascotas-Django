@@ -1,12 +1,15 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 
 # Create your views here.
 from CarritoApp.Carrito import Carrito
 from CarritoApp.models import Producto
+from CarritoApp import views
 
 
 def tienda(request):
-    #return HttpResponse("Hola Pythonizando")
     productos = Producto.objects.all()
     return render(request, "tienda.html", {'productos':productos})
 
@@ -37,6 +40,19 @@ def limpiar_carrito(request):
 def index(request):
     return render(request, 'index.html')
 
+def signup(request):
+    if request.method == 'GET':
+        return render(request, 'signup.html', {
+            'form': UserCreationForm
+        })
+    else:
+        if request.POST['password1'] == request.POST['password1']:
+            user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
+            user.save()
+            return HttpResponse('Usuario creado con exito')
+        return HttpResponse('Las contraseñas no coinciden')
+    
+
 def contacto(request):
     return render(request, 'contacto.html')
 
@@ -45,3 +61,7 @@ def juguetesPerros(request):
 
 def nosotros(request):
     return render(request, 'nosotros.html')
+
+def login(request):
+    return render(request, 'login.html')
+

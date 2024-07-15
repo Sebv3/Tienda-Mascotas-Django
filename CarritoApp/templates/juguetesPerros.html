@@ -49,37 +49,12 @@
       </span>
     </div>
     <div class="container-icon">
-      <div class="container-cart-icon">
-        <i class="bi bi-handbag logo-carrito">            
-        </i>
-        <div class="count-products">
-          <span id="contador-productos">
-            0
-          </span>
+      <a href="{% url 'login' %}" style="text-decoration: none; color: black;">
+        <div class="container-cart-icon logo-carrito">
+            <i class="bi bi-person-circle"></i>   
         </div>
-      </div>      
-      <div class="container-cart-products hidden-cart">
-        <div class="row-product">
-          <div class="cart-product">
-            <div class="info-cart-products">
-              <span class="cantidad-producto-carrito"></span>
-              <p class="titulo-producto-carrito"></p>
-              <span class="precio-producto-carrito"></span>
-            </div>  
-            <i class="bi bi-dash btn-restar"></i>
-            <i class="bi bi-plus btn-sumar"></i>     
-          </div>
-        </div>
-        <div class="cart-total">
-          <h3>Total: </h3>
-          <span class="total-pagar">$0</span>
-        </div>
-        <div class="cart-options">
-          <i class="bi bi-trash btn-cart-empty"></i>
-
-          <button class="btn btn-cart">Ir a Pagar</button>
-        </div>
-      </div>
+        Iniciar Sesión
+      </a>
     </div>
   </header>
 
@@ -110,75 +85,13 @@
       </div>
     </nav>
   </div>
-
-  <h4 class="text-center pt-5">Juguetes para perros</h4>
-  <div class="container mt-5">
-    <div class="row container-items">
-      <div class="col-12 col-md-4 col-lg-3 mb-5 card h-100">
-        <figure>
-          <img src="img/juguete-perro1.jpg" class="card-img-top" alt="...">
-        </figure>
-        <div class="card-body">
-          <h5>Juguete Hot Dog</h5>
-          <h6>$11.990</h5>
-          <button type="button" class="btn btn-card">Añadir al carrito </button>
-        </div>
-      </div>
-      <div class="col-12 col-md-4 col-lg-3 mb-5 card h-100">
-        <figure>
-          <img src="img/juguete-perro2.jpg" class="card-img-top" alt="...">
-        </figure>
-        <div class="card-body">
-          <h5>Peluche dinosaurio</h5>
-          <h6>$22.490</h5>
-          <button type="button" class="btn btn-card">Añadir al carrito </button>
-        </div>
-      </div>
-      <div class="col-12 col-md-4 col-lg-3 mb-5 card h-100">
-        <figure>
-          <img src="img/juguete-perro3.jpg" class="card-img-top" alt="...">
-        </figure>
-        <div class="card-body">
-          <h5>Wooden Antler</h5>
-          <h6>$13.590</h5>
-          <button type="button" class="btn btn-card">Añadir al carrito </button>
-        </div>
-      </div>
-      <div class="col-12 col-md-4 col-lg-3 mb-5 card h-100">
-        <figure>
-          <img src="img/juguete-perro4.jpg" class="card-img-top" alt="...">
-        </figure>
-        <div class="card-body">
-          <h5>Pelotas de agilidad</h5>
-          <h6>$4.990</h5>
-          <button type="button" class="btn btn-card">Añadir al carrito </button>
-        </div>
-      </div>
-      <div class="col-12 col-md-4 col-lg-3 mb-5 card h-100">
-          <figure>
-            <img src="img/juguete-perro5.jpg" class="card-img-top" alt="...">
-          </figure>
-          <div class="card-body">
-            <h5>Cuerda suave</h5>
-            <h6>$7.990</h5>
-            <button type="button" class="btn btn-card">Añadir al carrito </button>
-          </div>
-      </div>
-      <div class="col-12 col-md-4 col-lg-3 mb-5 card h-100">
-        <figure>
-          <img src="img/juguete-perro6.jpg" class="card-img-top" alt="...">
-        </figure>
-        <div class="card-body">
-          <h5>Peluche flamenco</h5>
-          <h6>$12.990</h5>
-          <button type="button" class="btn btn-card">Añadir al carrito </button>
-        </div>
-      </div>
-    </div>
+  <div class="container carrito-container mt-5 pb-5">
+    {% include "carrito.html" %}
   </div>
 
-  <footer class="container-footer">
-    <div class="row">
+
+  <footer class="container-footer mt-4 pb-5">
+    <div class="row w-100">
       <div class="col-md-4 footer1 mt-4">
         <a class="navbar-brand" href="index.html">
           <img src="{% static 'img/AmiPet.png' %}" alt="logo" width="70" height="70" class="logo">
@@ -216,26 +129,6 @@
       </div>
     </div>
   </footer>
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     <script src="app.js"></script>

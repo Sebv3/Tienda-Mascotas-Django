@@ -28,37 +28,12 @@
         </span>
       </div>
       <div class="container-icon">
-        <div class="container-cart-icon">
-          <i class="bi bi-handbag logo-carrito">            
-          </i>
-          <div class="count-products">
-            <span id="contador-productos">
-              0
-            </span>
+        <a href="{% url 'login' %}" style="text-decoration: none; color: black;">
+          <div class="container-cart-icon logo-carrito">
+              <i class="bi bi-person-circle"></i>   
           </div>
-        </div>      
-        <div class="container-cart-products hidden-cart">
-          <div class="row-product">
-            <div class="cart-product">
-              <div class="info-cart-products">
-                <span class="cantidad-producto-carrito"></span>
-                <p class="titulo-producto-carrito"></p>
-                <span class="precio-producto-carrito"></span>
-              </div>  
-              <i class="bi bi-dash btn-restar"></i>
-              <i class="bi bi-plus btn-sumar"></i>     
-            </div>
-          </div>
-          <div class="cart-total">
-            <h3>Total: </h3>
-            <span class="total-pagar">$0</span>
-          </div>
-          <div class="cart-options">
-            <i class="bi bi-trash btn-cart-empty"></i>
-
-            <button class="btn btn-cart">Ir a Pagar</button>
-          </div>
-        </div>
+          Iniciar Sesión
+        </a>
       </div>
     </header>
 
@@ -90,15 +65,6 @@
       </nav>
     </div>
 
-    <!-- CATEGORIAS -->
-    <div class="container-categorias">
-      <a href="#" class="categoria">
-        <img src="{% static 'img/gatos.png' %}" class="img-categoria" alt="...">
-      </a>
-      <a href="#" class="categoria">
-        <img src="{% static 'img/perros.png' %}" class="img-categoria" alt="...">
-      </a>
-    </div>
 
 
     <h4 class="text-center pt-5">Nuestros productos</h4>
@@ -114,7 +80,7 @@
                 <div class="card-body">
                   <h5 class="card-tittle">{{ producto.nombre }}</h5>
                   <p class="card-text">{{ producto.categoria }}</p>
-                  <p class="card-text">{{ producto.precio }}</p>
+                  <p class="card-text">$ {{ producto.precio }}</p>
                   <a href="{% url 'Add' producto.id %}" class="btn btn-card">Agregar al carrito</a>
                 </div>       
               </div>
@@ -131,7 +97,7 @@
   
 
     <footer class="container-footer">
-      <div class="row">
+      <div class="row w-100">
         <div class="col-md-4 footer1 mt-4">
           <a class="navbar-brand" href="index.html">
             <img src="{% static 'img/AmiPet.png' %}" alt="logo" width="70" height="70" class="logo">
