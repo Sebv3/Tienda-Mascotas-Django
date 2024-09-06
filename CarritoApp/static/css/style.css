@@ -1,7 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
 }
+
+header {
+    background-color: rgba(198, 108, 251, 0.493);
+    display: flex;
+    align-items: center;
+}
+
+.custom-link {
+    color: black !important;
+    text-decoration: none !important;
+    list-style: none;
+    
+}
+
+.custom-link:hover {
+    color: inherit !important;
+}
+
 
 .informativo {
     background-color: #000000d3;
@@ -91,12 +115,6 @@ body {
     color: rgb(213, 165, 241);
 }
 
-header {
-    background-color: rgba(198, 108, 251, 0.493);
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 10px;
-}
 
 
 .container-donar {
@@ -349,9 +367,94 @@ header {
     background-color: #000000d3;
 }
 
-.logo {
-    background-color: #fff;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+header {
+    align-items: center;
+    padding: 2rem;
+    background-color: #ececec;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten en filas */
+    margin-left: 0; /* Eliminar margen que desalineaba */
+}
+
+/* Para pantallas pequeñas: */
+@media (max-width: 576px) {
+    .header-content {
+        justify-content: center; /* Centra los elementos en móviles */
+        gap: 1rem; /* Añadir espacio entre los elementos */
+    }
+}
+
+.logo {
+    max-width: 4rem;
+    margin-right: 0; /* Ajustar margen en móviles */
+}
+
+.nav-list {
+    list-style-type: none;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    align-items: start;
+    padding-left: 0;
+}
+
+.nav-list li a {
+    text-decoration: none;
+    color: white;
+}
+
+.nav {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    background-color: #1c1c1c;
+    padding: 2rem;
+    transform: translateX(-100%); /* Ocultar fuera de pantalla */
+    transition: transform 0.3s ease-in-out; /* Transición suave */
+}
+
+.nav.visible {
+    transform: translateX(0); /* Mostrar el menú */
+}
+
+.cerrar-menu {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.abrir-menu {
+    margin-left: auto; /* Mueve el botón abrir menú a la izquierda */
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.abrir-menu svg {
+    width: 2rem;  /* Ajusta el tamaño según sea necesario */
+    height: 2rem; /* Ajusta el tamaño según sea necesario */
+}
+
 
 .footer1 {
     color: #fff;
@@ -367,6 +470,11 @@ header {
 
 .list-footer {
     list-style: none;
+}
+
+.color-barra {
+    color: #000;
+    background-color: aqua;
 }
 
 

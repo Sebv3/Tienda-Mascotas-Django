@@ -1,7 +1,11 @@
+from pyexpat.errors import messages
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.db import IntegrityError
+from django.contrib.auth import login, logout, authenticate
+
 
 # Create your views here.
 from CarritoApp.Carrito import Carrito
@@ -40,17 +44,70 @@ def limpiar_carrito(request):
 def index(request):
     return render(request, 'index.html')
 
-def signup(request):
+from django.db import IntegrityError
+
+def registrar_usuario(request):
     if request.method == 'GET':
-        return render(request, 'signup.html', {
+        return render(request, 'usuario/registrar_usuario.html', {
             'form': UserCreationForm
         })
+    
     else:
-        if request.POST['password1'] == request.POST['password1']:
-            user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
-            user.save()
-            return HttpResponse('Usuario creado con exito')
-        return HttpResponse('Las contraseñas no coinciden')
+        if request.POST['password1'] == request.POST['password2']:
+            try:
+                user = User.objects.create_user(
+                    username=request.POST['username'],
+                    password=request.POST['password1']
+                )
+                user.save()
+                login(request, user)
+                return redirect('Index')
+            except IntegrityError:
+                return render(
+                    request,
+                    "usuario/registrar_usuario.html",
+                    {"form": UserCreationForm, "error": "El usuario ya existe"},
+
+                )
+            else:
+                return render(
+                    request,
+                    "usuario/registrar_usuario.html",
+                    {"form": UserCreationForm, "error": "Las constraseñas no coinciden"},
+
+                )
+            
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('Index')
+
+def iniciar_sesion(request):
+    if request.method == 'GET':
+        return render(request, 'usuario/login.html',{
+            'form':AuthenticationForm
+        })
+    else:
+        user = authenticate(
+            request,
+            username=request.POST['username'],
+            password=request.POST['password']
+        )
+        if user is None:
+            return render(
+                    request,
+                    "usuario/login.html",
+                    {"form": AuthenticationForm, "error": "Datos incorrectos"},
+
+                )
+        else:
+            login(request,user)
+            return redirect('Index')
+
+
+
+    
+
+
     
 
 def contacto(request):
@@ -62,6 +119,6 @@ def juguetesPerros(request):
 def nosotros(request):
     return render(request, 'nosotros.html')
 
-def login(request):
-    return render(request, 'login.html')
+def b(request):
+    return render(request, 'b.html')
 
