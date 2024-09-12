@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const overlay = document.querySelector(".overlay");
     const dropdownCuenta = document.getElementById("dropdownCuenta");
     const dropdownMenu = dropdownCuenta.querySelector(".dropdown-menu");
+    const addToCartButtons = document.querySelectorAll('.btn-card');
+
 
     // Abre el menú al hacer clic en el botón abrir
     abrirBtn.addEventListener("click", function(event) {
@@ -45,6 +47,14 @@ document.addEventListener("DOMContentLoaded", function() {
     dropdownCuenta.addEventListener("mouseleave", function() {
         dropdownMenu.classList.remove("show");
     });
+
+
+    
+
+    
+
+
+
 
     
     

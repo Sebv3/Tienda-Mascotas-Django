@@ -91,6 +91,7 @@ header {
 .container-footer {
     background-color: #1c1c1c;
     margin-top: 50px;
+    padding-bottom: 30px;
 }
 
 .footer1 {
@@ -174,6 +175,27 @@ header {
     background-color: rgb(213, 165, 241);
 }
 
+.btn-card2 {
+    width: 50%;
+    background-color: #000;
+    color: white;
+    border: none;
+}
+
+.btn-card3 {
+    width: 50%;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+.btn-admin {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+
 .card img {
     width: 100%;
     object-fit: cover;
@@ -185,7 +207,7 @@ header {
 .container-donar {
     height: 450px;
     margin-top: 100px;
-    background-color: rgb(213, 165, 241);
+    background-color: #c1c1c152;
     text-align: center;
 }
 
@@ -199,13 +221,13 @@ header {
 }
 
 .titulo-contacto {
-    color: rgb(213, 165, 241);
+    color: black;
     text-align: center;
 }
 
 .contacto-item  i {
     font-size: 40px;
-    color: rgb(213, 165, 241);
+    color: black;
 }
 
 .errores {

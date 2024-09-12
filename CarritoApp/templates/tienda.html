@@ -1,19 +1,18 @@
-  <!DOCTYPE html>
-  {% load static  %}
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Bienvenido a la tienda</title>
-      <!-- Bootstrap -->
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-      <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-      <!-- Styles -->
-      <link href="{% static 'css/index.css' %}" rel="stylesheet">
-      
-  </head>
-  <body>
-    <!--ENCABEZADO DE PAGINA-->
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiendita mascotas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+</head>
+<body>
+  
+
+  <!--ENCABEZADO DE PAGINA-->
   <header class="header-container">
     <div class="header-content row row-cols-1 row-cols-sm-2 g-3">
         <div class="col-md-1 col-sm-3">
@@ -38,6 +37,11 @@
                         <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
                         <li><a href="{% url 'juguetesPerros' %}">Mi Pedido</a></li>
                         <li><a href="{% url 'contacto' %}">Contacto</a></li>
+                        {% if user.is_superuser %}
+                          <li>
+                            <a href="{% url 'agregar_producto' %}">Agregar Producto</a>
+                          </li>
+                        {% endif %}
                     </ul>
                 </nav>
                 <div class="overlay"></div>
@@ -81,31 +85,43 @@
     <h4 class="text-center pt-5">Nuestros productos</h4>
     <div class="container mt-5">
       <div class="row">
-        <div class="col-md-8">
+        <div>
           <div class="row container-items">
             {% for producto in productos %}
-              <div class="col-12 col-md-4 col-lg-3 mb-5 card h-100">
+              <div class="col-12 col-md-4 col-lg-4 mb-5 card h-100">
                 <figure>
                   <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="card-img-top producto-imagen">
                 </figure>
                 <div class="card-body">
                   <h5 class="card-tittle">{{ producto.nombre }}</h5>
-                  <p class="card-text">{{ producto.categoria }}</p>
+                  <p class="card-text">Stock: {{ producto.stock }}</p>
                   <p class="card-text">$ {{ producto.precio }}</p>
-                  <a href="{% url 'Add' producto.id %}" class="btn btn-card">Agregar al carrito</a>
+                  
+                  <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-card mb-3">Ver detalles</a>
+
+                  {% if not user.is_superuser %}
+                <a href="{% url 'Add' producto.id %}" class="btn btn-card">Añadir al carrito</a>
+      {% endif %}
+                  {% if user.is_superuser %}
+                  <div class="btn-admin">
+                    <a href="{% url 'editar_producto' producto.id %}" class="btn btn-card2 mt-3">Editar Producto</a>
+                    <a href="{% url 'eliminar_producto' producto.id %}" class="btn btn-card3 mt-3">Eliminar Producto</a>
+                  </div>
+
+                  
+
+                {% endif %}
                 </div>       
               </div>
             {% endfor %}
           </div>
         </div>
-        <div class="col-md-4">
-          {% include "carrito.html" %}
-        </div>
       </div>
     </div>
 
 
-  
+
+
 
     <footer class="container-footer">
     <div class="row w-100">
@@ -145,11 +161,32 @@
     </div>
   </footer>
 
+  <div class="modal fade" id="continueOrCheckoutModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Producto añadido al carrito</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Deseas seguir comprando o proceder al pago?
+      </div>
+      <div class="modal-footer">
+        <a href="{% url 'Tienda' %}" class="btn btn-secondary">Seguir Comprando</a>
+        <a href="{% url 'juguetesPerros' %}" class="btn btn-primary">Proceder al Pago</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
     <script src="{% static 'js/main.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-          crossorigin="anonymous">
-  </script>
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous">
+</script>
 </body>
 </html>

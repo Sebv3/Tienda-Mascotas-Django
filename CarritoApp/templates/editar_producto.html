@@ -80,16 +80,32 @@
     </div>
 </header>
 
-  <div class="container carrito-container mt-5 pb-5">
-    {% include "carrito.html" %}
+
+    <div class="container mt-5">
+    <h2>Editar Producto</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-card">Guardar Cambios</button>
+    </form>
   </div>
 
 
-  <br><br><br><br><br><br><br><br><br>
 
 
 
-  <footer class="container-footer">
+<br><br><br><br>
+
+
+
+
+
+
+
+
+
+
+<footer class="container-footer">
     <div class="row w-100">
       <div class="col-md-4 footer1 mt-4">
         <a class="navbar-brand logo-footer" href="index.html">
