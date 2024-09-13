@@ -14,21 +14,20 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap; /* Permite que los elementos se ajusten en filas */
-    margin-left: 0; /* Eliminar margen que desalineaba */
+    flex-wrap: wrap; 
+    margin-left: 0;
 }
 
-/* Para pantallas pequeñas: */
 @media (max-width: 576px) {
     .header-content {
-        justify-content: center; /* Centra los elementos en móviles */
-        gap: 1rem; /* Añadir espacio entre los elementos */
+        justify-content: center;
+        gap: 1rem; 
     }
 }
 
 .logo {
     max-width: 4rem;
-    margin-right: 0; /* Ajustar margen en móviles */
+    margin-right: 0; 
 }
 
 .nav-list {
@@ -53,14 +52,14 @@ header {
     width: 250px;
     background-color: #1c1c1c;
     padding: 2rem;
-    transform: translateX(-100%); /* Ocultar fuera de pantalla */
-    transition: transform 0.3s ease-in-out; /* Transición suave */
-    z-index: 9999; /* Asegura que esté por encima de otros elementos */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out; 
+    z-index: 9999; 
 }
 
 
 .nav.visible {
-    transform: translateX(0); /* Mostrar el menú */
+    transform: translateX(0);
 }
 
 .cerrar-menu {
@@ -75,7 +74,7 @@ header {
 }
 
 .abrir-menu {
-    margin-left: auto; /* Mueve el botón abrir menú a la izquierda */
+    margin-left: auto;
     background: none;
     border: none;
     font-size: 2rem;
@@ -84,8 +83,8 @@ header {
 }
 
 .abrir-menu svg {
-    width: 2rem;  /* Ajusta el tamaño según sea necesario */
-    height: 2rem; /* Ajusta el tamaño según sea necesario */
+    width: 2rem; 
+    height: 2rem; 
 }
 
 .container-footer {
@@ -109,7 +108,7 @@ header {
 
 .logo-footer img {
     margin-left: 30px;
-    filter: invert(1); /* Invertir colores, convierte el logo negro en blanco */
+    filter: invert(1); 
 }
 
 .overlay {
@@ -118,14 +117,13 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Color negro con opacidad */
-    z-index: 9998; /* Justo por debajo del menú */
-    visibility: hidden; /* No visible por defecto */
-    opacity: 0; /* Totalmente transparente al inicio */
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 9998;
+    visibility: hidden;
+    opacity: 0; 
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
 
-/* Mostrar el overlay cuando el menú esté visible */
 .nav.visible + .overlay {
     visibility: visible;
     opacity: 1;
@@ -253,4 +251,28 @@ header {
 .form-label {
     margin-bottom: 5px;
     margin-top: 10px;
+}
+
+.btn-carrito {
+    font-size: 2rem; 
+    padding: 10px;
+    color: #000;
+}
+
+.btn-carrito:hover {
+    border: none;
+}
+
+.btn-carrito i {
+    font-size: 2rem;
+}
+
+.message-container {
+    position: absolute;
+    top: 10%; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 600px;
+    z-index: 1050;
 }

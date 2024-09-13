@@ -32,15 +32,22 @@
                 <nav class="nav">
                     <button class="cerrar-menu"><i class="bi bi-x"></i></button>
                     <ul class="nav-list">
+
                         <li><a href="{% url 'Index' %}">Inicio</a></li>
                         <li><a href="{% url 'Tienda' %}">Productos</a></li>
-                        <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
-                        <li><a href="{% url 'juguetesPerros' %}">Mi Pedido</a></li>
-                        <li><a href="{% url 'contacto' %}">Contacto</a></li>
+
+                        {% if not user.is_superuser %}
+                          <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
+                          <li><a href="{% url 'juguetesPerros' %}">Mi Carrito</a></li>
+                          <li><a href="{% url 'contacto' %}">Contacto</a></li>
+          
+                        {% endif %}
                         {% if user.is_superuser %}
+
                           <li>
-                            <a href="{% url 'agregar_producto' %}">Agregar Producto</a>
+                            <a href="{% url 'lista_usuarios' %}">Usuarios</a>
                           </li>
+
                         {% endif %}
                     </ul>
                 </nav>
@@ -53,6 +60,14 @@
                 <button class="btn btn-outline-success" type="submit">Buscar</button>
             </form>
         </div>
+
+      {% if not user.is_superuser %}
+        <div class="col-md-1 col-sm-2 align-items-center justify-content-center">
+          <a href="{% url 'juguetesPerros' %}" class="btn-carrito">
+            <i class="bi bi-cart-fill"></i>
+          </a>
+        </div>
+      {% endif %}
         
         {% if user.is_authenticated %}
           <div class="dropdown col-md-3 col-sm-6" id="dropdownCuenta">
@@ -108,43 +123,7 @@
 
 
 
-<footer class="container-footer">
-    <div class="row w-100">
-      <div class="col-md-4 footer1 mt-4">
-        <a class="navbar-brand logo-footer" href="index.html">
-          <img src="{% static 'img/AmiPet.png' %}" alt="logo" width="70" height="70" class="logo">
-        </a>      
-        <ul class="list-footer mt-4">
-          <h5>Acerca de AmiPet</h5>
-          <li><a href="#" class="nav-link">Nosotros</a></li>
-          <li><a href="#" class="nav-link">Preguntas Frecuentes</a></li>
-          <li><a href="#" class="nav-link">Informacion</a></li>
-          <li><a href="#" class="nav-link">Contacto</a></li>
-        </ul>
-      </div>
-      <div class="col-md-4 footer2 mt-4">
-        <ul class="list-footer">
-          <h5>Productos</h5>
-          <li><a href="#" class="nav-link">Productos</a></li>
-          <li><a href="#" class="nav-link">Productos Destacados</a></li>
-          <li><a href="#" class="nav-link">Ofertas</a></li>
-          <li><a href="#" class="nav-link">Mi Pedido</a></li>
-          <li><a href="#" class="nav-link">Carrito de Compras</a></li>
-          <li><a href="#" class="nav-link">Seguimiento</a></li>
-          <li><a href="#" class="nav-link">Juguetes</a></li>
-          <li><a href="#" class="nav-link">Accesorios</a></li>
-        </ul>
-      </div>
-      <div class="col-md-4 footer-redes text-center mt-4 mb-4">
-        <div>
-          <h5>Síguenos</h5>
-          <i class="bi bi-whatsapp" style="font-size: 24px;"></i>
-          <i class="bi bi-instagram" style="font-size: 24px;"></i>
-          <i class="bi bi-facebook" style="font-size: 24px;"></i>
-        </div>
-      </div>
-    </div>
-  </footer>
+
 
 
     <script src="{% static 'js/main.js' %}"></script>

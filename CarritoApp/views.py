@@ -8,6 +8,11 @@ from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect
 from .forms import ProductoForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib import messages
+
+
 
 
 
@@ -53,34 +58,35 @@ from django.db import IntegrityError
 
 def registrar_usuario(request):
     if request.method == 'GET':
-        return render(request, 'usuario/registrar_usuario.html', {
-            'form': UserCreationForm
-        })
+        return render(request, 'usuario/registrar_usuario.html')
     
     else:
+        # Verificar si las contraseñas coinciden
         if request.POST['password1'] == request.POST['password2']:
             try:
+                # Verificar si el correo ya está en uso
+                if User.objects.filter(email=request.POST['email']).exists():
+                    return render(request, 'usuario/registrar_usuario.html', {
+                        "error": "El correo ya está registrado."
+                    })
+                
+                # Crear usuario
                 user = User.objects.create_user(
                     username=request.POST['username'],
-                    password=request.POST['password1']
+                    password=request.POST['password1'],
+                    email=request.POST['email']  # Guardar el correo
                 )
                 user.save()
                 login(request, user)
                 return redirect('Index')
             except IntegrityError:
-                return render(
-                    request,
-                    "usuario/registrar_usuario.html",
-                    {"form": UserCreationForm, "error": "El usuario ya existe"},
-
-                )
-            else:
-                return render(
-                    request,
-                    "usuario/registrar_usuario.html",
-                    {"form": UserCreationForm, "error": "Las constraseñas no coinciden"},
-
-                )
+                return render(request, 'usuario/registrar_usuario.html', {
+                    "error": "El usuario ya existe"
+                })
+        else:
+            return render(request, 'usuario/registrar_usuario.html', {
+                "error": "Las contraseñas no coinciden"
+            })
             
 def cerrar_sesion(request):
     logout(request)
@@ -88,25 +94,28 @@ def cerrar_sesion(request):
 
 def iniciar_sesion(request):
     if request.method == 'GET':
-        return render(request, 'usuario/login.html',{
-            'form':AuthenticationForm
+        return render(request, 'usuario/login.html', {
+            'form': AuthenticationForm
         })
     else:
-        user = authenticate(
-            request,
-            username=request.POST['username'],
-            password=request.POST['password']
-        )
-        if user is None:
-            return render(
-                    request,
-                    "usuario/login.html",
-                    {"form": AuthenticationForm, "error": "Datos incorrectos"},
-
-                )
-        else:
-            login(request,user)
-            return redirect('Index')
+        email = request.POST['username']  # El campo 'username' se usa para capturar el correo
+        password = request.POST['password']
+        
+        # Buscar el usuario por correo
+        try:
+            user = get_user_model().objects.get(email=email)
+            user = authenticate(request, username=user.username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('Index')
+            else:
+                return render(request, 'usuario/login.html', {
+                    "error": "Datos incorrectos"
+                })
+        except get_user_model().DoesNotExist:
+            return render(request, 'usuario/login.html', {
+                "error": "Correo no registrado"
+            })
 
 
 
@@ -133,7 +142,7 @@ def agregar_producto_admin(request):
         form = ProductoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('Index')
+            return redirect('Tienda')
     else:
         form = ProductoForm()
     return render(request, 'agregarProducto.html', {'form': form})
@@ -159,3 +168,30 @@ def eliminar_producto(request, producto_id):
 def detalle_producto(request, producto_id):
     producto = get_object_or_404(Producto, pk=producto_id)
     return render(request, 'detalle_producto.html', {'producto': producto})
+
+
+
+
+@login_required
+def lista_usuarios(request):
+    usuarios = User.objects.all()  # Obtener todos los usuarios
+    return render(request, 'lista_usuarios.html', {'usuarios': usuarios})
+
+@user_passes_test(lambda u: u.is_superuser)
+def cambiar_rol_usuario(request, usuario_id):
+    usuario = get_object_or_404(User, id=usuario_id)
+    if usuario.is_superuser:
+        usuario.is_superuser = False
+    else:
+        usuario.is_superuser = True
+    usuario.save()
+    return redirect('lista_usuarios')
+
+def eliminar_usuario(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        user.delete()
+        messages.success(request, 'Usuario eliminado correctamente.')
+    except User.DoesNotExist:
+        messages.error(request, 'El usuario no existe.')
+    return redirect('lista_usuarios')

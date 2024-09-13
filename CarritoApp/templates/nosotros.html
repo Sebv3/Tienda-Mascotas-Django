@@ -32,15 +32,22 @@
                 <nav class="nav">
                     <button class="cerrar-menu"><i class="bi bi-x"></i></button>
                     <ul class="nav-list">
+
                         <li><a href="{% url 'Index' %}">Inicio</a></li>
                         <li><a href="{% url 'Tienda' %}">Productos</a></li>
-                        <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
-                        <li><a href="{% url 'juguetesPerros' %}">Mi Pedido</a></li>
-                        <li><a href="{% url 'contacto' %}">Contacto</a></li>
+
+                        {% if not user.is_superuser %}
+                          <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
+                          <li><a href="{% url 'juguetesPerros' %}">Mi Carrito</a></li>
+                          <li><a href="{% url 'contacto' %}">Contacto</a></li>
+          
+                        {% endif %}
                         {% if user.is_superuser %}
+
                           <li>
-                            <a href="{% url 'agregar_producto' %}">Agregar Producto</a>
+                            <a href="{% url 'lista_usuarios' %}">Usuarios</a>
                           </li>
+
                         {% endif %}
                     </ul>
                 </nav>
@@ -53,6 +60,14 @@
                 <button class="btn btn-outline-success" type="submit">Buscar</button>
             </form>
         </div>
+
+      {% if not user.is_superuser %}
+        <div class="col-md-1 col-sm-2 align-items-center justify-content-center">
+          <a href="{% url 'juguetesPerros' %}" class="btn-carrito">
+            <i class="bi bi-cart-fill"></i>
+          </a>
+        </div>
+      {% endif %}
         
         {% if user.is_authenticated %}
           <div class="dropdown col-md-3 col-sm-6" id="dropdownCuenta">

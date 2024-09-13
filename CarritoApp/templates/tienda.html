@@ -32,15 +32,22 @@
                 <nav class="nav">
                     <button class="cerrar-menu"><i class="bi bi-x"></i></button>
                     <ul class="nav-list">
+
                         <li><a href="{% url 'Index' %}">Inicio</a></li>
                         <li><a href="{% url 'Tienda' %}">Productos</a></li>
-                        <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
-                        <li><a href="{% url 'juguetesPerros' %}">Mi Pedido</a></li>
-                        <li><a href="{% url 'contacto' %}">Contacto</a></li>
+
+                        {% if not user.is_superuser %}
+                          <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
+                          <li><a href="{% url 'juguetesPerros' %}">Mi Carrito</a></li>
+                          <li><a href="{% url 'contacto' %}">Contacto</a></li>
+          
+                        {% endif %}
                         {% if user.is_superuser %}
+
                           <li>
-                            <a href="{% url 'agregar_producto' %}">Agregar Producto</a>
+                            <a href="{% url 'lista_usuarios' %}">Usuarios</a>
                           </li>
+
                         {% endif %}
                     </ul>
                 </nav>
@@ -53,6 +60,14 @@
                 <button class="btn btn-outline-success" type="submit">Buscar</button>
             </form>
         </div>
+
+      {% if not user.is_superuser %}
+        <div class="col-md-1 col-sm-2 align-items-center justify-content-center">
+          <a href="{% url 'juguetesPerros' %}" class="btn-carrito">
+            <i class="bi bi-cart-fill"></i>
+          </a>
+        </div>
+      {% endif %}
         
         {% if user.is_authenticated %}
           <div class="dropdown col-md-3 col-sm-6" id="dropdownCuenta">
@@ -83,8 +98,18 @@
 
 
     <h4 class="text-center pt-5">Nuestros productos</h4>
+
+    
+
     <div class="container mt-5">
-      <div class="row">
+    {% if user.is_superuser %}
+    <div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'agregar_producto' %}" class="btn btn-base">
+        <i class="bi bi-plus-circle-fill"></i> Agregar Producto
+    </a>
+    </div>
+    {% endif %}
+      <div class="row mt-5">
         <div>
           <div class="row container-items">
             {% for producto in productos %}
@@ -122,7 +147,7 @@
 
 
 
-
+  {% if not user.is_superuser %}
     <footer class="container-footer">
     <div class="row w-100">
       <div class="col-md-4 footer1 mt-4">
@@ -160,6 +185,8 @@
       </div>
     </div>
   </footer>
+
+  {% endif %}
 
   <div class="modal fade" id="continueOrCheckoutModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog">

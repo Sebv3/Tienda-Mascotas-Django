@@ -132,7 +132,7 @@ form {
 
 .login_link {
     text-align: center;
-    margin-top: 25px; /* Espacio superior para separar del botón */
+    margin-top: 20px; /* Espacio superior para separar del botón */
     font-size: 14px; /* Tamaño de fuente para el texto del enlace */
     color: #333; /* Color del texto */
 }
