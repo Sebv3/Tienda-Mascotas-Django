@@ -6,11 +6,13 @@ from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect
-from .forms import ProductoForm
+from .forms import CategoriaForm, ProductoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
+from .models import Producto, Categoria
+
 
 
 
@@ -23,8 +25,24 @@ from CarritoApp import views
 
 
 def tienda(request):
-    productos = Producto.objects.all()
-    return render(request, "tienda.html", {'productos':productos})
+    # Obtener el valor del parámetro GET 'categoria', si no existe, será None
+    categoria_id = request.GET.get('categoria')
+
+    # Si el valor es None o una cadena vacía, mostramos todos los productos
+    if categoria_id == "" or categoria_id is None:
+        productos = Producto.objects.all()  # Mostrar todos los productos
+    else:
+        productos = Producto.objects.filter(categoria__id=categoria_id)  # Filtrar por categoría
+
+    # Obtener todas las categorías para el cuadro de selección
+    categorias = Categoria.objects.all()
+
+    context = {
+        'productos': productos,
+        'categorias': categorias,
+    }
+    return render(request, 'tienda.html', context)
+
 
 
 
@@ -195,3 +213,15 @@ def eliminar_usuario(request, user_id):
     except User.DoesNotExist:
         messages.error(request, 'El usuario no existe.')
     return redirect('lista_usuarios')
+
+@login_required
+def agregar_categoria(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the new category to the database
+            return redirect('Tienda')  # Redirect after successful save
+    else:
+        form = CategoriaForm()
+    
+    return render(request, 'agregar_categoria.html', {'form': form})
