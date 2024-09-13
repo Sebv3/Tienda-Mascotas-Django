@@ -1,38 +1,43 @@
+{% load static %}
+
+
 <div class="alert alert-primary" role="alert">
   <table class="table table-bordered">
-    <thead>
+    <thead class="text-center">
       <tr>
-        <th scope="row" colspan="3" class="text-center">CARRITO</th>
+        <th scope="row" colspan="4" class="text-center">CARRITO</th>
       </tr>
       <tr>
+        <th scope="col">IMAGEN</th>
         <th scope="col">NOMBRE</th>
         <th scope="col">PRECIO</th>
         <th scope="col">CANTIDAD</th>
       </tr>
     </thead>
     <tbody>
-    {% if request.session.carrito.items %}
+    {% if request.session.carrito %}
     {% for key, value in request.session.carrito.items %}
       <tr>
-        <td>{{ value.nombre }}</td>
-        <td>{{ value.acumulado }}</td>
-        <td>
+<td  class="text-center"><img src="{{ value.imagen }}" alt="{{ value.nombre }}" style="width: 100px; height: auto;"></td>
+        <td class="btn-cantidad">{{ value.nombre }}</td>
+        <td class="btn-cantidad">{{ value.acumulado }}</td>
+        <td class="btn-cantidad">
           {{ value.cantidad }}
-          <a href="{% url 'Sub' value.producto_id %}" class="badge btn btn-dark badge-dark">-</a>
+          <a href="{% url 'Sub' value.producto_id %}" class="badge btn btn-dark badge-dark margen-cantidad">-</a>
           <a href="{% url 'Add' value.producto_id %}" class="badge btn btn-dark badge-dark">+</a>          
         </td>
       </tr>
     {% endfor %}
     {% else %}
     <tr>
-        <td colspan="3">
+        <td colspan="4">
             <div class="alert alert-danger text-center">Sin Productos</div>
         </td>
     </tr>
     {% endif %}
       <tr>
         <th scope="row">Total:</th>
-        <td colspan="2">$ {{ total_carrito }}</td>
+        <td colspan="3">$ {{ total_carrito }}</td>
       </tr>
     </tbody>
   </table>
@@ -40,5 +45,5 @@
 </div>
 <div class="row text-center">
   <div class="col-6"><a href="{% url 'CLS' %}" class="btn btn-base">Limpiar</a></div>
-  <div class="col-6"><a href="#" class="btn btn-base">Guardar</a></div>
+  <div class="col-6"><a href="#" class="btn btn-base">Ir a pagar</a></div>
 </div>

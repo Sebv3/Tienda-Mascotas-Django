@@ -94,52 +94,35 @@
 
     </div>
 </header>
-  <div class="container carrito-container mt-5 pb-5">
-    {% include "carrito.html" %}
-  </div>
 
 
-  <br><br><br><br><br><br><br><br><br>
-
-
-
-  <footer class="container-footer">
-    <div class="row w-100">
-      <div class="col-md-4 footer1 mt-4">
-        <a class="navbar-brand logo-footer" href="index.html">
-          <img src="{% static 'img/AmiPet.png' %}" alt="logo" width="70" height="70" class="logo">
-        </a>      
-        <ul class="list-footer mt-4">
-          <h5>Acerca de AmiPet</h5>
-          <li><a href="#" class="nav-link">Nosotros</a></li>
-          <li><a href="#" class="nav-link">Preguntas Frecuentes</a></li>
-          <li><a href="#" class="nav-link">Informacion</a></li>
-          <li><a href="#" class="nav-link">Contacto</a></li>
-        </ul>
-      </div>
-      <div class="col-md-4 footer2 mt-4">
-        <ul class="list-footer">
-          <h5>Productos</h5>
-          <li><a href="#" class="nav-link">Productos</a></li>
-          <li><a href="#" class="nav-link">Productos Destacados</a></li>
-          <li><a href="#" class="nav-link">Ofertas</a></li>
-          <li><a href="#" class="nav-link">Mi Pedido</a></li>
-          <li><a href="#" class="nav-link">Carrito de Compras</a></li>
-          <li><a href="#" class="nav-link">Seguimiento</a></li>
-          <li><a href="#" class="nav-link">Juguetes</a></li>
-          <li><a href="#" class="nav-link">Accesorios</a></li>
-        </ul>
-      </div>
-      <div class="col-md-4 footer-redes text-center mt-4 mb-4">
-        <div>
-          <h5>Síguenos</h5>
-          <i class="bi bi-whatsapp" style="font-size: 24px;"></i>
-          <i class="bi bi-instagram" style="font-size: 24px;"></i>
-          <i class="bi bi-facebook" style="font-size: 24px;"></i>
+<div class="container mt-5 perfil-container">
+    <div class="perfil-card" style="max-width: 800px; margin: auto;">
+        <div class="card-body text-center perfil-card-body">
+            <i class="bi bi-person-circle perfil-icono"></i>
+            <h2 class="card-title mt-3 perfil-titulo">{{ usuario.username }}</h2>
+            <p class="card-text perfil-texto"><strong>Correo:</strong> {{ usuario.email }}</p>
+            <a href="#" class="btn perfil-btn">Editar Perfil</a>
         </div>
-      </div>
     </div>
-  </footer>
+</div>
+
+
+
+
+
+<br><br><br><br>
+
+
+
+
+
+
+
+
+
+
+
 
 
     <script src="{% static 'js/main.js' %}"></script>

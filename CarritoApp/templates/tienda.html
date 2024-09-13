@@ -75,7 +75,7 @@
                 ¡Hola! {{ user.username }}
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                <li><a class="dropdown-item" href="{% url 'perfil_usuario' %}">Mi Perfil</a></li>
                 <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-left"></i>   Cerrar Sesión</a></li>
             </ul>
           </div>
@@ -87,7 +87,7 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
                 <li><a class="dropdown-item" href="{% url 'registrar_usuario' %}">Registrarse</a></li>
-                <li><a class="dropdown-item">Mi Perfil</a></li>
+                <li><a class="dropdown-item" href="{% url 'perfil_usuario' %}">Mi Perfil</a></li>
             </ul>
           </div>
         {% endif %}

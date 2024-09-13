@@ -28,6 +28,7 @@ urlpatterns = [
     path('cambiar-rol/<int:usuario_id>/', views.cambiar_rol_usuario, name='cambiar_rol_usuario'),
     path('eliminar_usuario/<int:user_id>/', views.eliminar_usuario, name='eliminar_usuario'),
     path('agregar_categoria/', views.agregar_categoria, name='agregar_categoria'),
+    path('perfil/', views.perfil_usuario, name='perfil_usuario'),
 
 
 ]   

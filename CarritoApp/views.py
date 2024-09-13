@@ -225,3 +225,7 @@ def agregar_categoria(request):
         form = CategoriaForm()
     
     return render(request, 'agregar_categoria.html', {'form': form})
+
+@login_required
+def perfil_usuario(request):
+    return render(request, 'perfil_usuario.html', {'usuario': request.user})
