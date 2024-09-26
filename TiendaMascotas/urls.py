@@ -29,6 +29,8 @@ urlpatterns = [
     path('eliminar_usuario/<int:user_id>/', views.eliminar_usuario, name='eliminar_usuario'),
     path('agregar_categoria/', views.agregar_categoria, name='agregar_categoria'),
     path('perfil/', views.perfil_usuario, name='perfil_usuario'),
+    path('recuperar/', views.agregar_categoria, name='recuperar'),
+
 
 
 ]   

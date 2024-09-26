@@ -1,3 +1,7 @@
+from babel.numbers import format_currency
+
+
+
 class Carrito:
     def __init__(self, request):
         self.request = request
@@ -12,7 +16,7 @@ class Carrito:
     def agregar(self, producto):
         id = str(producto.id)
         if id not in self.carrito.keys():
-            self.carrito[id]={
+            self.carrito[id] = {
                 "producto_id": producto.id,
                 "nombre": producto.nombre,
                 "precio": producto.precio,
@@ -24,6 +28,10 @@ class Carrito:
             self.carrito[id]["cantidad"] += 1
             self.carrito[id]["acumulado"] += producto.precio
         self.guardar_carrito()
+
+
+    def formatear_precio(self, precio):
+        return format_currency(precio, 'CLP', locale='es_CL')
 
     def guardar_carrito(self):
         self.session["carrito"] = self.carrito

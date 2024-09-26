@@ -49,7 +49,28 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 
+    var toastElements = document.querySelectorAll('.toast');
+    toastElements.forEach(function(toastElement) {
+        var toastInstance = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 1500  // 3 segundos antes de ocultarse
+        });
+        toastInstance.show();  // Mostrar la alerta
+    });
 
+
+    const logoutLink = document.getElementById('logout-link');
+    
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function(event) {
+            event.preventDefault();  // Evitar que el enlace se siga automáticamente
+            const confirmLogout = confirm('¿Estás seguro de que deseas cerrar sesión?');
+            
+            if (confirmLogout) {
+                window.location.href = this.href;  // Redirigir al enlace original si confirma
+            }
+        });
+    }   
 
     
 });

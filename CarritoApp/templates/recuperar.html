@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiendita mascotas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+</head>
+<body>
+  
+
+  <!--ENCABEZADO DE PAGINA-->
+  <header class="header-container">
+    <div class="header-content row row-cols-1 row-cols-sm-2 g-3">
+        <div class="col-md-1 col-sm-3">
+            <img src="{% static 'img/AmiPet.png' %}" alt="Logo" class="logo">
+        </div>
+        <div class="col-md-2 col-sm-9">
+            <button class="abrir-menu">
+                <div class="fs-4 mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"></path>
+                    </svg>
+                    Menú
+                </div>
+            </button>
+
+            <div>
+                <nav class="nav">
+                    <button class="cerrar-menu"><i class="bi bi-x"></i></button>
+                    <ul class="nav-list">
+
+                        <li><a href="{% url 'Index' %}">Inicio</a></li>
+                        <li><a href="{% url 'Tienda' %}">Productos</a></li>
+
+                        {% if not user.is_superuser %}
+                          <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
+                          <li><a href="{% url 'juguetesPerros' %}">Mi Carrito</a></li>
+                          <li><a href="{% url 'contacto' %}">Contacto</a></li>
+          
+                        {% endif %}
+                        {% if user.is_superuser %}
+
+                          <li>
+                            <a href="{% url 'lista_usuarios' %}">Usuarios</a>
+                          </li>
+
+                        {% endif %}
+                    </ul>
+                </nav>
+                <div class="overlay"></div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Buscar productos..." aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+        </div>
+
+      {% if not user.is_superuser %}
+        <div class="col-md-1 col-sm-2 align-items-center justify-content-center">
+          <a href="{% url 'juguetesPerros' %}" class="btn-carrito">
+            <i class="bi bi-cart-fill"></i>
+          </a>
+        </div>
+      {% endif %}
+        
+        {% if user.is_authenticated %}
+          <div class="dropdown col-md-3 col-sm-6" id="dropdownCuenta">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton">
+                ¡Hola! {{ user.username }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="{% url 'perfil_usuario' %}">Mi Perfil</a></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-left"></i>   Cerrar Sesión</a></li>
+            </ul>
+          </div>
+        {% else %}
+          <div class="dropdown col-md-3 col-sm-6" id="dropdownCuenta">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton">
+                ¡Hola! Inicia sesión
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
+                <li><a class="dropdown-item" href="{% url 'registrar_usuario' %}">Registrarse</a></li>
+                <li><a class="dropdown-item" href="{% url 'perfil_usuario' %}">Mi Perfil</a></li>
+            </ul>
+          </div>
+        {% endif %}
+
+    </div>
+</header>
+
+
+
+    <main class="container my-4">
+    <h1 class="mb-4">Recupera tu cuenta</h1>
+    <form method="post" enctype="multipart/form-data" class="shadow p-4 rounded bg-light">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-base mt-3">Recuperar cuenta</button>
+    </form>
+</main>
+
+
+
+
+
+
+
+
+<br><br><br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+          crossorigin="anonymous">
+  </script>
+</body>
+</html>

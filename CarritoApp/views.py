@@ -1,4 +1,5 @@
 from pyexpat.errors import messages
+from django import template
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -12,6 +13,8 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from .models import Producto, Categoria
+from babel.numbers import format_currency
+
 
 
 
@@ -50,6 +53,7 @@ def agregar_al_carrito(request, producto_id):
     carrito = Carrito(request)
     producto = Producto.objects.get(id=producto_id)
     carrito.agregar(producto)
+    messages.success(request, "Producto agregado al carrito de compras.")
     return redirect('Tienda')
 
 def eliminar_producto(request, producto_id):
@@ -84,27 +88,29 @@ def registrar_usuario(request):
             try:
                 # Verificar si el correo ya está en uso
                 if User.objects.filter(email=request.POST['email']).exists():
-                    return render(request, 'usuario/registrar_usuario.html', {
-                        "error": "El correo ya está registrado."
-                    })
+                    messages.error(request, "El correo ya está registrado.")
+                    return redirect('registrar_usuario')
                 
                 # Crear usuario
                 user = User.objects.create_user(
                     username=request.POST['username'],
                     password=request.POST['password1'],
-                    email=request.POST['email']  # Guardar el correo
+                    email=request.POST['email']
                 )
                 user.save()
-                login(request, user)
-                return redirect('Index')
+
+                # Agregar mensaje de éxito
+                messages.success(request, "Usuario registrado exitosamente, por favor inicia sesión.")
+                
+                # Redirigir al login
+                return redirect('login')
+                
             except IntegrityError:
-                return render(request, 'usuario/registrar_usuario.html', {
-                    "error": "El usuario ya existe"
-                })
+                messages.error(request, "El usuario ya existe.")
+                return redirect('registrar_usuario')
         else:
-            return render(request, 'usuario/registrar_usuario.html', {
-                "error": "Las contraseñas no coinciden"
-            })
+            messages.error(request, "Las contraseñas no coinciden.")
+            return redirect('registrar_usuario')
             
 def cerrar_sesion(request):
     logout(request)
@@ -119,28 +125,30 @@ def iniciar_sesion(request):
         email = request.POST['username']  # El campo 'username' se usa para capturar el correo
         password = request.POST['password']
         
-        # Buscar el usuario por correo
         try:
+            # Buscar el usuario por correo
             user = get_user_model().objects.get(email=email)
             user = authenticate(request, username=user.username, password=password)
+            
             if user is not None:
                 login(request, user)
                 return redirect('Index')
             else:
-                return render(request, 'usuario/login.html', {
-                    "error": "Datos incorrectos"
-                })
+                # Contraseña incorrecta
+                messages.error(request, "Contraseña incorrecta.")
+                return redirect('login')  # Redirige para mostrar el mensaje de error
         except get_user_model().DoesNotExist:
-            return render(request, 'usuario/login.html', {
-                "error": "Correo no registrado"
-            })
+            # Correo no registrado
+            messages.error(request, "Correo no registrado.")
+            return redirect('login')  # Redirige para mostrar el mensaje de error
 
 
 
     
 
 
-    
+def recuperar(request):
+    return render(request, 'recuperar.html')
 
 def contacto(request):
     return render(request, 'contacto.html')

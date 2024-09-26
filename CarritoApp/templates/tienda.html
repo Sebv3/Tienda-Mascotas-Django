@@ -10,6 +10,9 @@
     <link href="{% static 'css/index.css' %}" rel="stylesheet">
 </head>
 <body>
+
+  {% load custom_filters %}
+
   
 
   <!--ENCABEZADO DE PAGINA-->
@@ -76,8 +79,8 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" href="{% url 'perfil_usuario' %}">Mi Perfil</a></li>
-                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-left"></i>   Cerrar Sesión</a></li>
-            </ul>
+                <li><a id="logout-link" class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-left"></i>   Cerrar Sesión</a></li>
+              </ul>
           </div>
         {% else %}
           <div class="dropdown col-md-3 col-sm-6" id="dropdownCuenta">
@@ -94,6 +97,24 @@
 
     </div>
 </header>
+
+
+<div class="container mt-3">
+  {% if messages %}
+      <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+          {% for message in messages %}
+              <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000" data-bs-autohide="true">
+                  <div class="d-flex">
+                      <div class="toast-body">
+                          {{ message }}
+                      </div>
+                      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+              </div>
+          {% endfor %}
+      </div>
+  {% endif %}
+</div>
 
 
 
@@ -140,7 +161,7 @@
                 <div class="card-body">
                   <h5 class="card-tittle">{{ producto.nombre }}</h5>
                   <p class="card-text">Stock: {{ producto.stock }}</p>
-                  <p class="card-text">$ {{ producto.precio }}</p>
+                  <p class="card-text"> {{ producto.precio|currency_format }}</p>
                   
                   <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-card mb-3">Ver detalles</a>
 
@@ -208,23 +229,7 @@
 
   {% endif %}
 
-  <div class="modal fade" id="continueOrCheckoutModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalLabel">Producto añadido al carrito</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ¿Deseas seguir comprando o proceder al pago?
-      </div>
-      <div class="modal-footer">
-        <a href="{% url 'Tienda' %}" class="btn btn-secondary">Seguir Comprando</a>
-        <a href="{% url 'juguetesPerros' %}" class="btn btn-primary">Proceder al Pago</a>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 
 
