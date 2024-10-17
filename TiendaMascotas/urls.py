@@ -15,11 +15,10 @@ urlpatterns = [
     path('limpiar/', views.limpiar_carrito, name="CLS"),
     path('contacto/', views.contacto, name="contacto"),
     path('nosotros/', views.nosotros, name="nosotros"),
-    path('juguetesPerros/', views.juguetesPerros, name="juguetesPerros"),
+    path('resumenCarrito/', views.resumenCarrito, name="resumenCarrito"),
     path('logout/', views.cerrar_sesion, name='logout'),
     path('login/', views.iniciar_sesion, name='login'),
     path('tienda', include('CarritoApp.urls')),
-    path('b/', views.b, name="b"),
     path('agregar_producto/', views.agregar_producto_admin, name='agregar_producto'),
     path('producto/<int:pk>/editar/', views.editar_producto, name='editar_producto'),
     path('eliminar_producto/<int:producto_id>/', views.eliminar_producto, name='eliminar_producto'),
@@ -30,6 +29,8 @@ urlpatterns = [
     path('agregar_categoria/', views.agregar_categoria, name='agregar_categoria'),
     path('perfil/', views.perfil_usuario, name='perfil_usuario'),
     path('recuperar/', views.agregar_categoria, name='recuperar'),
+    path('pagar/', views.iniciar_pago, name='iniciar_pago'),
+    path('pago-exitoso/', views.pago_exitoso, name='pago_exitoso'),
 
 
 

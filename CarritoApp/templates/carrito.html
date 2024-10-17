@@ -27,9 +27,9 @@
         <td class="btn-cantidad">{{ value.acumulado|currency_format }}</td>
         <td class="btn-cantidad">
           {{ value.cantidad }}
-          <a href="{% url 'Sub' value.producto_id %}" class="badge btn btn-dark badge-dark margen-cantidad">-</a>
-          <a href="{% url 'Add' value.producto_id %}" class="badge btn btn-dark badge-dark">+</a>          
-        </td>
+          <button class="badge btn btn-dark btn-restar" data-producto-id="{{ value.producto_id }}">-</button>
+          <button class="badge btn btn-dark btn-sumar" data-producto-id="{{ value.producto_id }}">+</button>
+      </td>
       </tr>
     {% endfor %}
     {% else %}
@@ -49,5 +49,46 @@
 </div>
 <div class="row text-center">
   <div class="col-6"><a href="{% url 'CLS' %}" class="btn btn-base">Limpiar</a></div>
-  <div class="col-6"><a href="#" class="btn btn-base">Ir a pagar</a></div>
+  <div class="col-6"><a href="{% url 'iniciar_pago' %}" class="btn btn-base">Ir a pagar</a></div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Sumar cantidad
+        $('.btn-sumar').click(function (e) {
+            e.preventDefault();
+            const productoId = $(this).data('producto-id');
+
+            $.ajax({
+                url: `/agregar/${productoId}/`,
+                method: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                success: function (response) {
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Error al agregar producto:', error);
+                }
+            });
+        });
+
+        // Restar cantidad
+        $('.btn-restar').click(function (e) {
+            e.preventDefault();
+            const productoId = $(this).data('producto-id');
+
+            $.ajax({
+                url: `/restar/${productoId}/`,
+                method: 'POST',
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                success: function (response) {
+                    location.reload();
+                },
+                error: function (error) {
+                    console.error('Error al restar producto:', error);
+                }
+            });
+        });
+    });
+</script>

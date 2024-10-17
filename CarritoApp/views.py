@@ -14,30 +14,51 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from .models import Producto, Categoria
 from babel.numbers import format_currency
-
-
-
-
-
-
-
-# Create your views here.
 from CarritoApp.Carrito import Carrito
 from CarritoApp.models import Producto
 from CarritoApp import views
+from transbank.webpay.webpay_plus.transaction import Transaction
+
+
+
+
+def iniciar_pago(request):
+    carrito = request.session.get('carrito', {})
+    total = sum(item['acumulado'] for item in carrito.values())
+
+    transaction = Transaction()
+    response = transaction.create(
+        buy_order='orden1234',  # Cambia a un valor único
+        session_id='sesion1234',
+        amount=total,
+        return_url=request.build_absolute_uri('/pago-exitoso/')
+    )
+
+    # Redirige al usuario a Webpay para completar el pago
+    return redirect(response['url'] + '?token_ws=' + response['token'])
+
+
+def pago_exitoso(request):
+    token = request.GET.get('token_ws')
+    transaction = Transaction()
+    response = transaction.commit(token)
+
+    if response['status'] == 'AUTHORIZED':
+        # Pago exitoso, limpia el carrito
+        request.session['carrito'] = {}
+        return HttpResponse('Pago exitoso. ¡Gracias por tu compra!')
+    else:
+        return HttpResponse('Error en el pago. Intenta nuevamente.')
 
 
 def tienda(request):
-    # Obtener el valor del parámetro GET 'categoria', si no existe, será None
     categoria_id = request.GET.get('categoria')
 
-    # Si el valor es None o una cadena vacía, mostramos todos los productos
     if categoria_id == "" or categoria_id is None:
         productos = Producto.objects.all()  # Mostrar todos los productos
     else:
         productos = Producto.objects.filter(categoria__id=categoria_id)  # Filtrar por categoría
 
-    # Obtener todas las categorías para el cuadro de selección
     categorias = Categoria.objects.all()
 
     context = {
@@ -51,27 +72,27 @@ def tienda(request):
 
 def agregar_al_carrito(request, producto_id):
     carrito = Carrito(request)
-    producto = Producto.objects.get(id=producto_id)
+    producto = get_object_or_404(Producto, id=producto_id)
     carrito.agregar(producto)
-    messages.success(request, "Producto agregado al carrito de compras.")
+    messages.success(request, "Producto agregado al carrito.")
     return redirect('Tienda')
 
 def eliminar_producto(request, producto_id):
     carrito = Carrito(request)
-    producto = Producto.objects.get(id=producto_id)
+    producto = get_object_or_404(Producto, id=producto_id)
     carrito.eliminar(producto)
-    return redirect("juguetesPerros")
+    return redirect("resumenCarrito")
 
 def restar_producto(request, producto_id):
     carrito = Carrito(request)
-    producto = Producto.objects.get(id=producto_id)
+    producto = get_object_or_404(Producto, id=producto_id)
     carrito.restar(producto)
-    return redirect("juguetesPerros")
+    return redirect("resumenCarrito")
 
 def limpiar_carrito(request):
     carrito = Carrito(request)
     carrito.limpiar()
-    return redirect("juguetesPerros")
+    return redirect("resumenCarrito")
 
 def index(request):
     return render(request, 'index.html')
@@ -153,14 +174,13 @@ def recuperar(request):
 def contacto(request):
     return render(request, 'contacto.html')
 
-def juguetesPerros(request):
-    return render(request, 'juguetesPerros.html')
+def resumenCarrito(request):
+    carrito = Carrito(request)
+    return render(request, 'resumenCarrito.html', {'carrito': carrito.carrito})
 
 def nosotros(request):
     return render(request, 'nosotros.html')
 
-def b(request):
-    return render(request, 'b.html')
 
 @login_required
 def agregar_producto_admin(request):
@@ -212,6 +232,7 @@ def cambiar_rol_usuario(request, usuario_id):
         usuario.is_superuser = True
     usuario.save()
     return redirect('lista_usuarios')
+
 
 def eliminar_usuario(request, user_id):
     try:

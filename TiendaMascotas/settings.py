@@ -130,3 +130,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+WEBPAY_COMMERCE_CODE = '597055555532' 
+WEBPAY_API_KEY = '597055555532'
+WEBPAY_ENVIRONMENT = 'TEST'       
