@@ -97,9 +97,12 @@ def limpiar_carrito(request):
 def index(request):
     return render(request, 'index.html')
 
-from django.db import IntegrityError
 
 def registrar_usuario(request):
+    # Verificar si el usuario ya está autenticado
+    if request.user.is_authenticated:
+        return redirect('Index')  # Redirigir al índice o cualquier otra página adecuada
+    
     if request.method == 'GET':
         return render(request, 'usuario/registrar_usuario.html')
     
@@ -138,6 +141,10 @@ def cerrar_sesion(request):
     return redirect('Index')
 
 def iniciar_sesion(request):
+    # Verificar si el usuario ya está autenticado
+    if request.user.is_authenticated:
+        return redirect('Index')  # Redirigir al índice o cualquier otra página adecuada
+    
     if request.method == 'GET':
         return render(request, 'usuario/login.html', {
             'form': AuthenticationForm
@@ -161,7 +168,7 @@ def iniciar_sesion(request):
         except get_user_model().DoesNotExist:
             # Correo no registrado
             messages.error(request, "Correo no registrado.")
-            return redirect('login')  # Redirige para mostrar el mensaje de error
+            return redirect('login')
 
 
 
