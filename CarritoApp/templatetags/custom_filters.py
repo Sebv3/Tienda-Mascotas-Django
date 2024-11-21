@@ -6,7 +6,8 @@ register = template.Library()
 @register.filter
 def currency_format(value):
     try:
-        # Formatear el valor como pesos chilenos
+        # Asegurarse de que el valor es numérico
+        value = float(value)
         return format_currency(value, 'CLP', locale='es_CL')
     except (ValueError, TypeError):
         return value

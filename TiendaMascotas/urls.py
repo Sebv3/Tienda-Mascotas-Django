@@ -13,7 +13,7 @@ urlpatterns = [
     path('eliminar/<int:producto_id>/', views.eliminar_producto, name="Del"),
     path('restar/<int:producto_id>/', views.restar_producto, name="Sub"),
     path('limpiar/', views.limpiar_carrito, name="CLS"),
-    path('contacto/', views.contacto, name="contacto"),
+    path('contacto/', views.contacto, name='contacto'),
     path('nosotros/', views.nosotros, name="nosotros"),
     path('resumenCarrito/', views.resumenCarrito, name="resumenCarrito"),
     path('logout/', views.cerrar_sesion, name='logout'),
@@ -31,7 +31,10 @@ urlpatterns = [
     path('recuperar/', views.agregar_categoria, name='recuperar'),
     path('pagar/', views.iniciar_pago, name='iniciar_pago'),
     path('pago-exitoso/', views.pago_exitoso, name='pago_exitoso'),
-
+    path('mensajes/', views.lista_mensajes, name='lista_mensajes'),
+    path('recuperar-cuenta/', views.recuperar_cuenta, name='recuperar_cuenta'),
+    path('reset-password/<uidb64>/<token>/', views.reset_password, name='reset_password'),
+    path('pedidos/', views.lista_pedidos, name='lista_pedidos'),
 
 
 ]   

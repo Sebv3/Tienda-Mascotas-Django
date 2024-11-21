@@ -48,6 +48,12 @@
                           <li>
                             <a href="{% url 'lista_usuarios' %}">Usuarios</a>
                           </li>
+                          <li>
+                            <a href="{% url 'lista_mensajes' %}">Mensajes</a>
+                          </li>
+                          <li>
+                            <a href="{% url 'lista_pedidos' %}">Pedidos</a>
+                          </li>
 
                         {% endif %}
                     </ul>
@@ -58,7 +64,7 @@
         <div class="col-md-3 col-sm-6">
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Buscar productos..." aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Buscar</button>
+                <button class="btn btn-outline btn-base" type="submit">Buscar</button>
             </form>
         </div>
 
@@ -88,7 +94,6 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
                 <li><a class="dropdown-item" href="{% url 'registrar_usuario' %}">Registrarse</a></li>
-                <li><a class="dropdown-item" href="{% url 'perfil_usuario' %}">Mi Perfil</a></li>
             </ul>
           </div>
         {% endif %}

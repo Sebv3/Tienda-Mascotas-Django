@@ -7,10 +7,13 @@
     <title>Tiendita mascotas</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+    <link href="{% static 'css/registro.css' %}" rel="stylesheet">
 </head>
 <body>
+
   
+  
+
 
   <!--ENCABEZADO DE PAGINA-->
   <header class="header-container">
@@ -99,13 +102,33 @@
 
     </div>
 </header>
-  <div class="container carrito-container mt-5 pb-5">
-    {% include "carrito.html" %}
-  </div>
 
+<div class="center mt-5">
+  <form class="formita" method="POST" action="{% url 'recuperar_cuenta' %}">
+      {% csrf_token %}
+      <div class="logo_container">
+          <img src="{% static 'img/AmiPet.png' %}" alt="Logo Tiendita Mascotas">
+      </div>
+      
+      <h1>Recuperar cuenta</h1>
+      
+      <div class="txt_field">
+          <input type="email" name="email" required>
+          <span></span>
+          <label>Correo Electrónico</label>
+      </div>
 
-  <br><br><br><br><br><br><br><br><br>
-
+      <div>
+        <p class="text-center">Le enviaremos un enlace a su correo electrónico para reestablecer su contraseña</p>
+      </div>
+      
+      <input type="submit" value="Enviar enlace">
+      
+      <div class="login_link">
+          <a href="{% url 'login' %}">Volver a Iniciar sesión</a>
+      </div>
+  </form>
+</div>
 
 
   <footer class="container-footer">
@@ -154,3 +177,4 @@
   </script>
 </body>
 </html>
+

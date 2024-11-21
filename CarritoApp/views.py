@@ -7,17 +7,28 @@ from django.http import HttpResponse
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect
-from .forms import CategoriaForm, ProductoForm
+from .forms import CategoriaForm, ContactoForm, ProductoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
-from .models import Producto, Categoria
+from .models import MensajeContacto, Pedido, Producto, Categoria
 from babel.numbers import format_currency
 from CarritoApp.Carrito import Carrito
 from CarritoApp.models import Producto
 from CarritoApp import views
 from transbank.webpay.webpay_plus.transaction import Transaction
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.forms import SetPasswordForm
+from django.shortcuts import get_object_or_404
 
 
 
@@ -265,3 +276,81 @@ def agregar_categoria(request):
 @login_required
 def perfil_usuario(request):
     return render(request, 'perfil_usuario.html', {'usuario': request.user})
+
+
+#guardar contacto del usuario con admin
+def contacto(request):
+    if request.method == 'POST':
+        form = ContactoForm(request.POST)
+        if form.is_valid():
+            form.save()  # Guardar el formulario en la base de datos
+            messages.success(request, '¡Tu mensaje ha sido enviado con éxito!')
+            return redirect('contacto')  # Redirigir al mismo formulario
+        else:
+            messages.error(request, 'Por favor corrige los errores del formulario.')
+    else:
+        form = ContactoForm()
+    return render(request, 'contacto.html', {'form': form})
+
+#restringir acceso a lista de mensajes de usuarios
+@user_passes_test(lambda u: u.is_superuser)
+def lista_mensajes(request):
+    mensajes = MensajeContacto.objects.all()  # Recuperar todos los mensajes
+    return render(request, 'lista_mensajes.html', {'mensajes': mensajes})
+
+#recuperar cuenta
+def recuperar_cuenta(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            reset_url = request.build_absolute_uri(
+                f"/reset-password/{uid}/{token}/"
+            )
+            
+            # Enviar correo electrónico
+            send_mail(
+                'Restablece tu contraseña',
+                f'Usa el siguiente enlace para restablecer tu contraseña: {reset_url}',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+            
+            messages.success(request, "Hemos enviado un enlace para restablecer tu contraseña a tu correo.")
+            return redirect('recuperar_cuenta')
+        except User.DoesNotExist:
+            messages.error(request, "No se encontró una cuenta con ese correo electrónico.")
+    
+    return render(request, 'recuperar_cuenta.html')
+
+def reset_password(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = get_object_or_404(User, pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            form = SetPasswordForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Tu contraseña se ha restablecido correctamente.")
+                return redirect('login')
+        else:
+            form = SetPasswordForm(user)
+        return render(request, 'reset_password.html', {'form': form})
+    else:
+        messages.error(request, "El enlace no es válido o ha expirado.")
+        return redirect('recuperar_cuenta')
+    
+def es_admin(user):
+    return user.is_authenticated and user.is_superuser
+
+@user_passes_test(es_admin)
+def lista_pedidos(request):
+    pedidos = Pedido.objects.all().order_by('-fecha')  # Lista todos los pedidos ordenados por fecha
+    return render(request, 'lista_pedidos.html', {'pedidos': pedidos})

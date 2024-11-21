@@ -47,6 +47,12 @@
                           <li>
                             <a href="{% url 'lista_usuarios' %}">Usuarios</a>
                           </li>
+                          <li>
+                            <a href="{% url 'lista_mensajes' %}">Mensajes</a>
+                          </li>
+                          <li>
+                            <a href="{% url 'lista_pedidos' %}">Pedidos</a>
+                          </li>
 
                         {% endif %}
                     </ul>
@@ -57,7 +63,7 @@
         <div class="col-md-3 col-sm-6">
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Buscar productos..." aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Buscar</button>
+                <button class="btn btn-outline btn-base" type="submit">Buscar</button>
             </form>
         </div>
 
@@ -87,7 +93,6 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
                 <li><a class="dropdown-item" href="{% url 'registrar_usuario' %}">Registrarse</a></li>
-                <li><a class="dropdown-item" href="{% url 'perfil_usuario' %}">Mi Perfil</a></li>
             </ul>
           </div>
         {% endif %}
@@ -128,33 +133,60 @@
 
   <!-- Formulario contacto -->
   <div class="container">
-        <form id="miFormulario" class="form-group">
+    <form method="post" class="form-group" id="miFormulario">
+        {% csrf_token %}
 
-            <label class="form-label">*Nombre</label>
-            <input type="text" class="form-control" id="itNombre" aria-describedby="nombreHelp">
-            <div id="mensaje1" class="errores">Dame tu nombre (2-50 caracteres)</div>
+        <label for="itNombre" class="form-label">*Nombre</label>
+        {{ form.nombre }}
+        {% if form.nombre.errors %}
+            <div id="mensaje1" class="errores">
+                {{ form.nombre.errors.0 }}
+            </div>
+        {% endif %}
 
-            <label class="form-label">*Apellido</label>
-            <input type="text" class="form-control" id="itApellido" aria-describedby="apellidoHelp">
-            <div id="mensaje2" class="errores">Dame tu apellido (2-50 caracteres)</div>
+        <label for="itApellido" class="form-label">*Apellido</label>
+        {{ form.apellido }}
+        {% if form.apellido.errors %}
+            <div id="mensaje2" class="errores">
+                {{ form.apellido.errors.0 }}
+            </div>
+        {% endif %}
 
-            <label class="form-label">*Correo electronico</label>
-            <input type="text" class="form-control" id="itCorreo" aria-describedby="emailHelp">
-            <div id="mensaje3" class="errores">Dame tu correo valido (@example.com)</div>
+        <label for="itCorreo" class="form-label">*Correo electrónico</label>
+        {{ form.correo }}
+        {% if form.correo.errors %}
+            <div id="mensaje3" class="errores">
+                {{ form.correo.errors.0 }}
+            </div>
+        {% endif %}
 
-            <label class="form-label">*Telefono</label>
-            <input type="text" class="form-control" id="itTelefono" aria-describedby="asuntoHelp">
-            <div id="mensaje4" class="errores">Escribe tu telefono (9 digitos)</div>
+        <label for="itTelefono" class="form-label">*Teléfono</label>
+        {{ form.telefono }}
+        {% if form.telefono.errors %}
+            <div id="mensaje4" class="errores">
+                {{ form.telefono.errors.0 }}
+            </div>
+        {% endif %}
 
-            <label class="form-label">*Mensaje</label>
-            <textarea class="form-control" id="itMensaje" rows="5"></textarea>
-            <div id="mensaje5" class="errores">Escribe tu mensaje (no mas de 500 caracteres)</div>
+        <label for="itMensaje" class="form-label">*Mensaje</label>
+        {{ form.mensaje }}
+        {% if form.mensaje.errors %}
+            <div id="mensaje5" class="errores">
+                {{ form.mensaje.errors.0 }}
+            </div>
+        {% endif %}
 
-            <input type="submit" id="bEnviar" value="Enviar" class="btn btn-base boton mt-3">
-            <div id="error"></div>
+        <input type="submit" id="bEnviar" value="Enviar" class="btn btn-base boton mt-3">
+    </form>
 
-        </form>
-    </div>
+    {% if messages %}
+        <div class="mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
 
     <footer class="container-footer">
     <div class="row w-100">

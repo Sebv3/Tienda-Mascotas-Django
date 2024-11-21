@@ -336,3 +336,7 @@ header {
     background-color: #000000bb;
     color: white;
 }
+
+.btn-detallepedido {
+    right: 0;
+}
